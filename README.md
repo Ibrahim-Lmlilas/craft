@@ -2,6 +2,7 @@
 
 <p align="center">
   <img src="UI_CraftBid/public/image.png" alt="CraftBid Login Page" width="800">
+   <img src="UI_CraftBid/public/auth/bg.png" alt="CraftBid Login Page" width="800">
 </p>
 
 <p align="center">
