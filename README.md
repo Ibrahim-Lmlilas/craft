@@ -4,58 +4,47 @@
   <strong>Experience The Souk Modernized</strong>
 </p>
 
-## 📸 Screenshots
-
-<div align="center">
-  
-### 🖼️ Project Gallery
-
-<div style="overflow-x: auto; white-space: nowrap; padding: 20px; background: #f8f9fa; border-radius: 10px; margin: 20px 0;">
-  
-  <div style="display: inline-flex; gap: 20px;">
-    <div style="display: inline-block; width: 400px; vertical-align: top;">
-      <img src="UI_CraftBid/public/image.png" alt="Login Page" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.15);">
-      <p style="margin-top: 10px; font-weight: bold; color: #333; text-align: center;">🔐 Login Page</p>
-    </div>
-    
-    <div style="display: inline-block; width: 400px; vertical-align: top;">
-      <img src="UI_CraftBid/public/hero1.png" alt="Hero Section" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.15);">
-      <p style="margin-top: 10px; font-weight: bold; color: #333; text-align: center;">🎨 Hero Section</p>
-    </div>
-    
-    <div style="display: inline-block; width: 400px; vertical-align: top;">
-      <img src="UI_CraftBid/public/hero2.png" alt="Features" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.15);">
-      <p style="margin-top: 10px; font-weight: bold; color: #333; text-align: center;">✨ Features</p>
-    </div>
-    
-    <div style="display: inline-block; width: 400px; vertical-align: top;">
-      <img src="UI_CraftBid/public/tt.png" alt="Dashboard" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.15);">
-      <p style="margin-top: 10px; font-weight: bold; color: #333; text-align: center;">📊 Dashboard</p>
-    </div>
-    
-    <div style="display: inline-block; width: 400px; vertical-align: top;">
-      <img src="UI_CraftBid/public/logo.png" alt="Logo" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.15);">
-      <p style="margin-top: 10px; font-weight: bold; color: #333; text-align: center;">🎯 CraftBid Logo</p>
-    </div>
-  </div>
-  
-</div>
-
-<p align="center" style="color: #666; font-size: 14px; margin-top: 10px;">
-  <em>💡 Scroll horizontally to view all images</em>
-</p>
-
-</div>
-
----
-
-<p align="center">
-  <em>Scroll down to see more details about the project</em>
-</p>
-
 <p align="center">
   A modern online auction platform connecting artisans with buyers, built with Laravel and React.
 </p>
+
+---
+
+## 🖼️ Project Screenshots
+
+<div align="center">
+  
+### Click on any image to view in full size
+
+<div style="display: flex; gap: 15px; overflow-x: auto; padding: 20px; justify-content: center; flex-wrap: wrap;">
+  
+<a href="UI_CraftBid/public/image.png" target="_blank">
+  <img src="UI_CraftBid/public/image.png" alt="CraftBid Login Page" width="400" style="border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); cursor: pointer; transition: transform 0.3s;">
+</a>
+
+<a href="UI_CraftBid/public/image copy.png" target="_blank">
+  <img src="UI_CraftBid/public/image copy.png" alt="CraftBid Screenshot 2" width="400" style="border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); cursor: pointer; transition: transform 0.3s;">
+</a>
+
+<a href="UI_CraftBid/public/image copy 2.png" target="_blank">
+  <img src="UI_CraftBid/public/image copy 2.png" alt="CraftBid Screenshot 3" width="400" style="border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); cursor: pointer; transition: transform 0.3s;">
+</a>
+
+<a href="UI_CraftBid/public/auth/bg.png" target="_blank">
+  <img src="UI_CraftBid/public/auth/bg.png" alt="CraftBid Background" width="400" style="border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); cursor: pointer; transition: transform 0.3s;">
+</a>
+
+<a href="UI_CraftBid/public/auth/sideImage_2.jpg" target="_blank">
+  <img src="UI_CraftBid/public/auth/sideImage_2.jpg" alt="CraftBid Side Image" width="400" style="border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); cursor: pointer; transition: transform 0.3s;">
+</a>
+
+</div>
+
+<p style="margin-top: 20px; color: #666; font-size: 14px;">
+  💡 <strong>Tip:</strong> Scroll horizontally to view all images, or click on any image to view it in full size
+</p>
+
+</div>
 
 ---
 
