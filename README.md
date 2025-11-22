@@ -1,11 +1,56 @@
 # CraftBid 🎨
 
 <p align="center">
-  <img src="UI_CraftBid/public/image.png" alt="CraftBid Login Page" width="800">
+  <strong>Experience The Souk Modernized</strong>
 </p>
 
+## 📸 Screenshots
+
+<div align="center">
+  
+### 🖼️ Project Gallery
+
+<div style="overflow-x: auto; white-space: nowrap; padding: 20px; background: #f8f9fa; border-radius: 10px; margin: 20px 0;">
+  
+  <div style="display: inline-flex; gap: 20px;">
+    <div style="display: inline-block; width: 400px; vertical-align: top;">
+      <img src="UI_CraftBid/public/image.png" alt="Login Page" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.15);">
+      <p style="margin-top: 10px; font-weight: bold; color: #333; text-align: center;">🔐 Login Page</p>
+    </div>
+    
+    <div style="display: inline-block; width: 400px; vertical-align: top;">
+      <img src="UI_CraftBid/public/hero1.png" alt="Hero Section" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.15);">
+      <p style="margin-top: 10px; font-weight: bold; color: #333; text-align: center;">🎨 Hero Section</p>
+    </div>
+    
+    <div style="display: inline-block; width: 400px; vertical-align: top;">
+      <img src="UI_CraftBid/public/hero2.png" alt="Features" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.15);">
+      <p style="margin-top: 10px; font-weight: bold; color: #333; text-align: center;">✨ Features</p>
+    </div>
+    
+    <div style="display: inline-block; width: 400px; vertical-align: top;">
+      <img src="UI_CraftBid/public/tt.png" alt="Dashboard" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.15);">
+      <p style="margin-top: 10px; font-weight: bold; color: #333; text-align: center;">📊 Dashboard</p>
+    </div>
+    
+    <div style="display: inline-block; width: 400px; vertical-align: top;">
+      <img src="UI_CraftBid/public/logo.png" alt="Logo" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.15);">
+      <p style="margin-top: 10px; font-weight: bold; color: #333; text-align: center;">🎯 CraftBid Logo</p>
+    </div>
+  </div>
+  
+</div>
+
+<p align="center" style="color: #666; font-size: 14px; margin-top: 10px;">
+  <em>💡 Scroll horizontally to view all images</em>
+</p>
+
+</div>
+
+---
+
 <p align="center">
-  <strong>Experience The Souk Modernized</strong>
+  <em>Scroll down to see more details about the project</em>
 </p>
 
 <p align="center">
