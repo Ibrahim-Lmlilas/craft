@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,7 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Artisan extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, HasUuid;
 
     protected $fillable = [
         'user_id',
@@ -24,6 +25,7 @@ class Artisan extends Model
         'status',
         'id_verification_status',
         'id_verified_at',
+        'id_verification_pending_at',
         'id_document_front_path',
         'id_document_back_path',
     ];
@@ -31,6 +33,7 @@ class Artisan extends Model
     protected $casts = [
         'social_media_links' => 'array',
         'id_verified_at' => 'datetime',
+        'id_verification_pending_at' => 'datetime',
         'rating' => 'decimal:1',
     ];
 

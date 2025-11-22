@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\User;
 use App\Models\Wallet;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\DB;
@@ -10,7 +11,7 @@ use Exception;
 
 class WalletService
 {
-    public function adjustBalance(Wallet $wallet, float $amount, string $type, string $status = 'completed', ?string $description = null, ?int $auctionId = null): Transaction
+    public function adjustBalance(Wallet $wallet, float $amount, string $type, string $status = 'completed', ?string $description = null, ?string $auctionId = null): Transaction
     {
         return DB::transaction(function () use ($wallet, $amount, $type, $status, $description, $auctionId) {
             $wallet = Wallet::where('id', $wallet->id)->lockForUpdate()->firstOrFail();

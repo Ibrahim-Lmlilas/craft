@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('watchlists', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('auction_id')->constrained()->cascadeOnDelete();
+            $table->uuid('id')->primary();
+            $table->foreignUuid('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('auction_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
 
             // Ensure a user can only watch a specific auction once

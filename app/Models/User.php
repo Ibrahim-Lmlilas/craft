@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasUuid;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -13,7 +14,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasFactory, Notifiable, HasApiTokens;
+    use HasFactory, Notifiable, HasApiTokens, HasUuid;
 
     protected $fillable = [
         'name',
@@ -75,7 +76,11 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function hasRole(string $roleName): bool
     {
-        return $this->roles()->where('name', $roleName)->exists();
+        // Load roles if not already loaded
+        if (!$this->relationLoaded('roles')) {
+            $this->load('roles');
+        }
+        return $this->roles->contains('name', $roleName);
     }
 
     public function hasPermission(string $permissionName): bool

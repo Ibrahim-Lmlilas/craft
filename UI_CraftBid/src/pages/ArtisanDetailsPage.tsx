@@ -29,7 +29,7 @@ interface ArtisanDetailsErrors {
 const ArtisanDetailsPage: React.FC = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const { user, isLoading: authLoading } = useAuth();
+    const { user, isLoading: authLoading, refreshUser } = useAuth();
 
     const state = location.state as LocationState | null;
     const userEmail = user?.email || state?.email;
@@ -86,7 +86,9 @@ const ArtisanDetailsPage: React.FC = () => {
         setIsLoading(false);
 
         if (response.success) {
-            navigate('/upload-id', { replace: true, state: { email: userEmail } });
+            // Refresh user data to update profile completion status
+            await refreshUser();
+            navigate('/status', { replace: true });
         } else {
             const errorMsg = response.error?.message || 'Failed to save details.';
             if (response.error?.errors) {

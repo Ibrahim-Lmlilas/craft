@@ -14,6 +14,7 @@ use Illuminate\Auth\Events\Verified;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
 use Laravel\Socialite\Facades\Socialite;
 use Exception;
 
@@ -191,10 +192,25 @@ class AuthController extends Controller
     }
 
 
-    public function redirectToGoogle()
+    public function redirectToGoogle(Request $request)
     { 
+        // Get role from query parameter (for artisan registration)
+        $role = $request->input('role', 'buyer');
+        
+        if (!in_array($role, ['buyer', 'artisan'])) {
+            $role = 'buyer';
+        }
+        
+        // Generate a unique token to store role in cache
+        $stateToken = bin2hex(random_bytes(16));
+        
+        // Store role in cache for 10 minutes (enough time for OAuth flow)
+        Cache::put('google_role_' . $stateToken, $role, now()->addMinutes(10));
+        
+        // Use state parameter to pass token through OAuth flow
         return Socialite::driver('google')
             ->scopes(['openid', 'profile', 'email'])
+            ->with(['state' => $stateToken])
             ->redirect();
     }
 
@@ -205,6 +221,19 @@ class AuthController extends Controller
         $failureRedirect = $frontendUrl . '/login?error=google_failed'; 
 
         try {
+            // Get role from cache using state token
+            $role = 'buyer';
+            $stateToken = $request->input('state');
+            
+            if ($stateToken) {
+                $cachedRole = Cache::get('google_role_' . $stateToken);
+                if ($cachedRole && in_array($cachedRole, ['buyer', 'artisan'])) {
+                    $role = $cachedRole;
+                    // Remove from cache after use
+                    Cache::forget('google_role_' . $stateToken);
+                }
+            }
+            
             $googleUser = Socialite::driver('google')->stateless()->user(); 
             
             Log::info('Google User Data Received:', [
@@ -213,10 +242,11 @@ class AuthController extends Controller
                 'email' => $googleUser->getEmail(),
                 'avatar' => $googleUser->getAvatar(),
                 'token' => $googleUser->token,
+                'role' => $role,
                 'all_user_data' => (array) $googleUser 
             ]);
             
-            $user = DB::transaction(function () use ($googleUser) {
+            $user = DB::transaction(function () use ($googleUser, $request, $role) {
                 $existingUser = User::where('google_id', $googleUser->getId())->first();
 
                 if ($existingUser) {
@@ -238,12 +268,12 @@ class AuthController extends Controller
                         'google_id' => $googleUser->getId(),
                         'avatar' => $googleUser->getAvatar(),
                         'password' => null,
-                        'email_verified_at' => now(),
+                        'email_verified_at' => now(), // Google users are auto-verified
                     ]);
 
                     Wallet::create(['user_id' => $newUser->id]);
 
-                    $newUser->assignRole('buyer'); 
+                    $newUser->assignRole($role); 
                     
                     event(new Registered($newUser));
 
@@ -254,8 +284,19 @@ class AuthController extends Controller
             Auth::login($user, true);
             $request->session()->regenerate();
 
+            $user->load('roles');
+            
             Log::info('User logged in successfully via Google.', ['user_id' => $user->id]);
-            return redirect()->intended($successRedirect);
+            
+            // Determine redirect URL based on user role
+            $isAdmin = $user->hasRole('admin');
+            $finalRedirect = $isAdmin ? $frontendUrl . '/admin' : $successRedirect;
+            
+            // Return HTML page with JavaScript redirect to handle CORS and session issues
+            return response()->view('auth.google-callback', [
+                'redirectUrl' => $finalRedirect,
+                'user' => $user
+            ]);
 
         } catch (Exception $e) {
             Log::error('Google authentication failed.', [

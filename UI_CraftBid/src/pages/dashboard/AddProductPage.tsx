@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { AlertCircle, Check, Loader2 } from 'lucide-react';
 
 interface Category {
-    id: number;
+    id: string;
     name: string;
 }
 
@@ -81,7 +81,7 @@ const AddProductPage: React.FC = () => {
         const productData = {
             name,
             description,
-            category_id: parseInt(categoryId, 10), 
+            category_id: categoryId, 
         };
 
 

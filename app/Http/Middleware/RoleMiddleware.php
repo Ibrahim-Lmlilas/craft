@@ -15,7 +15,12 @@ class RoleMiddleware
             return response()->json(['message' => 'Unauthenticated.'], 401);
         }
 
-        if (! $request->user()->hasRole($role)) {
+        $user = $request->user();
+        
+        // Force refresh roles from database to ensure we have the latest roles
+        $user->load('roles');
+        
+        if (! $user->hasRole($role)) {
             return response()->json(['message' => 'This action is unauthorized.'], 403);
         }
 

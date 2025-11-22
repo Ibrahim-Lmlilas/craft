@@ -24,61 +24,7 @@ export default function Navbar() {
                 </NavLink>
                 
                 {user && isVerified && isDashboardRoute && (
-                    <div className="hidden md:flex ml-8 gap-4">
-                        {isArtisan && (
-                            <NavLink
-                                to="/dashboard"
-                                className={({isActive}) => `font-montserrat font-semibold ${isActive ? 'text-accent1' : 'text-gray-800 hover:text-accent1'}`}
-                            >
-                                Dashboard
-                            </NavLink>
-                        )}
-                        
-                        {isArtisan ? (
-                            <>
-                                <NavLink
-                                    to="/dashboard/my-products"
-                                    className={({isActive}) => `font-montserrat font-semibold ${isActive ? 'text-accent1' : 'text-gray-800 hover:text-accent1'}`}
-                                >
-                                    My Products
-                                </NavLink>
-                                <NavLink
-                                    to="/dashboard/my-auctions"
-                                    className={({isActive}) => `font-montserrat font-semibold ${isActive ? 'text-accent1' : 'text-gray-800 hover:text-accent1'}`}
-                                >
-                                    My Auctions
-                                </NavLink>
-                                <NavLink
-                                    to="/dashboard/profile"
-                                    className={({isActive}) => `font-montserrat font-semibold ${isActive ? 'text-accent1' : 'text-gray-800 hover:text-accent1'}`}
-                                >
-                                    Profile
-                                </NavLink>
-                            </>
-                        ) : (
-                            <>
-                                <NavLink
-                                    to="/dashboard/my-bids"
-                                    className={({isActive}) => `font-montserrat font-semibold ${isActive ? 'text-accent1' : 'text-gray-800 hover:text-accent1'}`}
-                                >
-                                    My Bids
-                                </NavLink>
-                                <NavLink
-                                    to="/dashboard/profile"
-                                    className={({isActive}) => `font-montserrat font-semibold ${isActive ? 'text-accent1' : 'text-gray-800 hover:text-accent1'}`}
-                                >
-                                    Profile
-                                </NavLink>
-                            </>
-                        )}
-                        
-                        <NavLink
-                            to="/dashboard/wallet"
-                            className={({isActive}) => `font-montserrat font-semibold ${isActive ? 'text-accent1' : 'text-gray-800 hover:text-accent1'}`}
-                        >
-                            Wallet
-                        </NavLink>
-                    </div>
+                    <div></div>
                 )}
                 
                 {user && isVerified && isDashboardRoute && (

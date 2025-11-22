@@ -121,7 +121,9 @@ const BuyerProfile: React.FC<BuyerProfileProps> = ({ user, onProfileUpdated }) =
                       <p className="text-gray-500 font-montserrat text-sm mt-1">{user.email}</p>
                       <div className="mt-3">
                         <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-accent1/10 text-accent1 border border-accent1/20">
-                          Buyer
+                          {user.roles && user.roles.length > 0 
+                            ? user.roles[0].name.charAt(0).toUpperCase() + user.roles[0].name.slice(1)
+                            : 'Buyer'}
                         </span>
                       </div>
                     </div>
@@ -226,7 +228,11 @@ const BuyerProfile: React.FC<BuyerProfileProps> = ({ user, onProfileUpdated }) =
                       
                       <div>
                         <h3 className="text-sm font-montserrat font-medium text-gray-500 mb-1">Account Type</h3>
-                        <p className="font-montserrat text-base text-gray-900">Buyer</p>
+                        <p className="font-montserrat text-base text-gray-900">
+                          {user.roles && user.roles.length > 0 
+                            ? user.roles[0].name.charAt(0).toUpperCase() + user.roles[0].name.slice(1)
+                            : 'Buyer'}
+                        </p>
                       </div>
                       
                       <div>

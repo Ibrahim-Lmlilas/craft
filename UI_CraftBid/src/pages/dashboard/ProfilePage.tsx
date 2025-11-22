@@ -28,6 +28,7 @@ const ProfilePage: React.FC = () => {
   
   const isArtisan = user.roles?.some(role => role.name === 'artisan');
   
+  // Admin and Buyer users use BuyerProfile component (role is displayed dynamically)
   return isArtisan ? (
     <ArtisanProfile user={user} onProfileUpdated={refreshUser} />
   ) : (

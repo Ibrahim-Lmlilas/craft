@@ -21,6 +21,14 @@ class ProfileController extends Controller
             return response()->json(['message' => 'Unauthorized.'], 403);
         }
 
+        // Check if email is verified (unless registered via Google which auto-verifies)
+        if (!$user->hasVerifiedEmail() && !$user->google_id) {
+            return response()->json([
+                'message' => 'Please verify your email address before completing your artisan profile.',
+                'requires_email_verification' => true
+            ], 403);
+        }
+
         try {
             $validated = $request->validate([
                 'business_name' => 'required|string|max:255',
@@ -47,12 +55,19 @@ class ProfileController extends Controller
 
             $artisanProfile = Artisan::updateOrCreate(
                 ['user_id' => $user->id],
-                $artisanData
+                array_merge($artisanData, [
+                    'status' => 'pending', // Set status to pending until admin approves
+                    'id_verification_status' => 'pending', // Set verification status to pending
+                    'id_verification_pending_at' => now(), // Track when verification started
+                ])
             );
 
             $artisanProfile->load('user:id,name,email');
 
-            return response()->json($artisanProfile, 200);
+            return response()->json([
+                'message' => 'Artisan profile created successfully. Please wait for admin verification.',
+                'artisan' => $artisanProfile
+            ], 200);
 
         } catch (ValidationException $e) {
             return response()->json([
@@ -71,6 +86,15 @@ class ProfileController extends Controller
     public function uploadIdDocuments(Request $request)
     {
         $user = $request->user();
+        
+        // Check if email is verified (unless registered via Google which auto-verifies)
+        if (!$user->hasVerifiedEmail() && !$user->google_id) {
+            return response()->json([
+                'message' => 'Please verify your email address before uploading ID documents.',
+                'requires_email_verification' => true
+            ], 403);
+        }
+
         $artisanProfile = $user->artisan;
 
         if (!$user || !$user->hasRole('artisan') || !$artisanProfile) {
@@ -104,6 +128,7 @@ class ProfileController extends Controller
 
             if (!empty($pathsToUpdate)) {
                 $statusUpdate['id_verification_status'] = 'pending';
+                $statusUpdate['id_verification_pending_at'] = now(); // Track when verification started
             }
 
             $artisanProfile->update(array_merge($pathsToUpdate, $statusUpdate));

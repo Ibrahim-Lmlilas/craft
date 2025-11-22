@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('permissions', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('name')->unique(); // e.g., 'create-product', 'verify-artisan'
             $table->string('display_name')->nullable(); // Optional user-friendly name
             $table->text('description')->nullable(); // Optional description

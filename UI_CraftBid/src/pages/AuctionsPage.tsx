@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api, { makeRequest } from '../lib/axois';
-import { Loader2 } from "lucide-react";
+import { Loader2, ArrowLeft } from "lucide-react";
 import Card from '@/components/auctions/card';
 import Navbar from '@/components/ui/navbar';
 import { useAuth } from '@/contexts/AuthContext';
 import Hero from '@/components/auctions/hero';
+import { Button } from '@/components/ui/button';
 
 export interface Auction {
     id: number;
@@ -40,6 +41,7 @@ const AuctionsPage: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const {user} = useAuth();
+    const navigate = useNavigate();
 
     const fetchAuctions = async () => {
         try {
@@ -101,7 +103,19 @@ const AuctionsPage: React.FC = () => {
             
             <div className="max-w-7xl mx-auto px-6 py-12">
                 <div className="flex flex-col mb-10">
-                    <h1 className="text-4xl font-montserrat font-semibold mb-6">Discover Auctions</h1>
+                    <div className="flex items-center justify-between mb-6">
+                        <h1 className="text-4xl font-montserrat font-semibold">Discover Auctions</h1>
+                        {user && (
+                            <Button
+                                onClick={() => navigate('/dashboard')}
+                                variant="outline"
+                                className="flex items-center gap-2 rounded-xl font-montserrat"
+                            >
+                                <ArrowLeft size={18} />
+                                Back to Dashboard
+                            </Button>
+                        )}
+                    </div>
                 </div>
 
                 {auctions.length > 0 ? (

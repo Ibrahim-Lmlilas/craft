@@ -36,16 +36,25 @@ Route::get('/auctions/{auction}', [App\Http\Controllers\Api\AuctionController::c
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/user', function (Request $request) {
-        return $request->user()->load('roles');
+        $user = $request->user();
+        // Force refresh roles from database
+        $user->load('roles');
+        return $user;
     });
 
     Route::get('/categories', [AdminCategoryController::class, 'index'])->name('categories.index');
     Route::get('/categories/{category}', [AdminCategoryController::class, 'show'])->name('categories.show');
 
+    // Artisan routes that don't require full verification (profile setup)
     Route::middleware(['role:artisan'])->prefix('artisan')->name('artisan.')->group(function () {
         Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
         Route::post('/profile', [ProfileController::class, 'store'])->name('profile.store');
         Route::post('/profile/upload-id', [ProfileController::class, 'uploadIdDocuments'])->name('profile.uploadId');
+    });
+
+    // Artisan routes that require full verification (email + profile + admin approval)
+    Route::middleware(['role:artisan', 'artisan.verified'])->prefix('artisan')->name('artisan.')->group(function () {
+        Route::get('/dashboard/statistics', [\App\Http\Controllers\Api\Artisan\DashboardController::class, 'statistics'])->name('dashboard.statistics');
         Route::get('/products', [ArtisanProductController::class, 'index'])->name('products.index');
         Route::post('/products', [ArtisanProductController::class, 'store'])->name('products.store');
         Route::get('/products/{product}', [ArtisanProductController::class, 'show'])->name('products.show');

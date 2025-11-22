@@ -189,8 +189,6 @@ const AuctionDetailPage: React.FC = () => {
 
     return () => {
       console.log(`Leaving channel: ${channelName}`);
-      channel.stopListening('.bid.placed');
-      channel.stopListening('.auction.ended');
       echo.leave(channelName);
     };
   }, [auction?.id, user]);

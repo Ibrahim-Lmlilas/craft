@@ -36,7 +36,7 @@ class AuctionController extends Controller
         $maxDurationMinutes = $maxDurationHours * 60;
 
         $rules = [
-            'product_id' => 'required|integer|exists:products,id',
+            'product_id' => 'required|uuid|exists:products,id',
             'reserve_price' => 'required|numeric|min:1',
             'bid_increment' => 'required|numeric|min:0.01',
             'quantity' => 'sometimes|integer|min:1',

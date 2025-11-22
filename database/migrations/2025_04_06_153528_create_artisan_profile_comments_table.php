@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('artisan_profile_comments', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('artisan_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete(); // The user who wrote the comment
+            $table->uuid('id')->primary();
+            $table->foreignUuid('artisan_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('user_id')->constrained()->cascadeOnDelete(); // The user who wrote the comment
             $table->text('comment');
             $table->unsignedTinyInteger('rating'); // Assuming a 1-5 star rating
             $table->timestamps();

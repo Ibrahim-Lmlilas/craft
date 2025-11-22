@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('role_user', function (Blueprint $table) {
             $table->primary(['role_id', 'user_id']); // Composite primary key
 
-            $table->foreignId('role_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('role_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('user_id')->constrained()->cascadeOnDelete();
 
             $table->timestamps(); // Optional: if you want to track when roles were assigned
         });

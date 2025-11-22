@@ -26,7 +26,7 @@ class CategoryController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:categories,name',
             'description' => 'nullable|string',
-            'parent_id' => 'nullable|integer|exists:categories,id',
+            'parent_id' => 'nullable|uuid|exists:categories,id',
         ]);
 
         $slug = Str::slug($validated['name']);
@@ -56,7 +56,7 @@ class CategoryController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255', Rule::unique('categories')->ignore($category->id)],
             'description' => 'nullable|string',
-            'parent_id' => ['nullable', 'integer', 'exists:categories,id', function ($attribute, $value, $fail) use ($category) {
+            'parent_id' => ['nullable', 'uuid', 'exists:categories,id', function ($attribute, $value, $fail) use ($category) {
                 if ($value == $category->id) {
                     $fail('A category cannot be its own parent.');
                 }

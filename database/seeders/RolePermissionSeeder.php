@@ -5,9 +5,11 @@ namespace Database\Seeders;
 use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\Wallet;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
 class RolePermissionSeeder extends Seeder
 {
@@ -16,29 +18,13 @@ class RolePermissionSeeder extends Seeder
      */
     public function run(): void
     {
-        $adminRole = Role::create([
-            'name' => 'admin',
-        ]);
-        Role::create([
-            'name' => 'verifier',
-        ]);
-        Role::create([
-            'name' => 'buyer',
-        ]);
-        Role::create([
-            'name' => 'artisan',
-        ]);
+        // Create roles
+        $adminRole = Role::firstOrCreate(['name' => 'admin']);
+        $verifierRole = Role::firstOrCreate(['name' => 'verifier']);
+        $buyerRole = Role::firstOrCreate(['name' => 'buyer']);
+        $artisanRole = Role::firstOrCreate(['name' => 'artisan']);
 
-        $admin = User::create(
-            [
-                'name' => 'Admin',
-                'email' => 'admin@example.com',
-                'password' => Hash::make('password'),
-            ]
-        );
-        
-        $admin->roles()->attach($adminRole);
-
+        // Create permissions
         $permissions = [
             'create',
             'read',
@@ -54,6 +40,11 @@ class RolePermissionSeeder extends Seeder
             'bid'
         ];
 
+        foreach ($permissions as $permission) {
+            Permission::firstOrCreate(['name' => $permission]);
+        }
+
+        // Define role permissions
         $adminPermissions = [
             'create',
             'read',
@@ -74,6 +65,7 @@ class RolePermissionSeeder extends Seeder
             'approve',
             'user',
         ];
+        
         $buyerPermissions = [
             'read',
             'create',
@@ -83,6 +75,7 @@ class RolePermissionSeeder extends Seeder
             'product',
             'bid',
         ];
+        
         $artisanPermissions = [
             'read',
             'create',
@@ -92,34 +85,62 @@ class RolePermissionSeeder extends Seeder
             'bid',
         ];
 
-        foreach ($permissions as $permission) {
-            Permission::create([
-                'name' => $permission,
-            ]);
+        // Attach permissions to roles
+        foreach ($adminPermissions as $permissionName) {
+            $permission = Permission::where('name', $permissionName)->first();
+            if ($permission && !$adminRole->permissions()->where('permission_id', $permission->id)->exists()) {
+                $adminRole->permissions()->attach($permission);
+            }
+        }
+        
+        foreach ($verifierPermissions as $permissionName) {
+            $permission = Permission::where('name', $permissionName)->first();
+            if ($permission && !$verifierRole->permissions()->where('permission_id', $permission->id)->exists()) {
+                $verifierRole->permissions()->attach($permission);
+            }
+        }
+        
+        foreach ($buyerPermissions as $permissionName) {
+            $permission = Permission::where('name', $permissionName)->first();
+            if ($permission && !$buyerRole->permissions()->where('permission_id', $permission->id)->exists()) {
+                $buyerRole->permissions()->attach($permission);
+            }
+        }
+        
+        foreach ($artisanPermissions as $permissionName) {
+            $permission = Permission::where('name', $permissionName)->first();
+            if ($permission && !$artisanRole->permissions()->where('permission_id', $permission->id)->exists()) {
+                $artisanRole->permissions()->attach($permission);
+            }
         }
 
-        $adminRole = Role::where('name', 'admin')->first();
-        $verifierRole = Role::where('name', 'verifier')->first();
-        $buyerRole = Role::where('name', 'buyer')->first();
-        $artisanRole = Role::where('name', 'artisan')->first();
-
-
-        foreach ($adminPermissions as $permission) {
-            $adminRole->permissions()->attach(Permission::where('name', $permission)->first());
+        // Create admin user
+        $admin = User::updateOrCreate(
+            ['email' => 'hakari@gmail.com'],
+            [
+                'name' => 'Admin',
+                'email' => 'hakari@gmail.com',
+                'password' => Hash::make('BABAmama-123'),
+                'email_verified_at' => now(), // Mark email as verified
+            ]
+        );
+        
+        // Create wallet for admin if it doesn't exist
+        if (!$admin->wallet) {
+            Wallet::create(['user_id' => $admin->id]);
         }
-        foreach ($verifierPermissions as $permission) {
-            $verifierRole->permissions()->attach(Permission::where('name', $permission)->first());
-        }
-        foreach ($buyerPermissions as $permission) {
-            $buyerRole->permissions()->attach(Permission::where('name', $permission)->first());
-        }
-        foreach ($artisanPermissions as $permission) {
-            $artisanRole->permissions()->attach(Permission::where('name', $permission)->first());
-        }
-
-        $user = User::first();
-        if ($user) {
-            $user->roles()->attach($adminRole);
+        
+        // IMPORTANT: Remove ALL existing roles first (including buyer, artisan, etc.)
+        // Then attach only admin role
+        DB::table('role_user')->where('user_id', $admin->id)->delete();
+        $admin->roles()->attach($adminRole->id);
+        
+        // Refresh the user to ensure roles are loaded
+        $admin->refresh();
+        
+        // Verify the role was assigned correctly
+        if (!$admin->hasRole('admin')) {
+            throw new \Exception('Failed to assign admin role to hakari@gmail.com');
         }
     }
 }

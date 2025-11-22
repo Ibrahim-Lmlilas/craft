@@ -185,18 +185,18 @@ const RegisterDetailsPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-4 w-full">
+        <div className="flex justify-center w-full">
           <button
             type="button"
+            onClick={() => {
+              const backendUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
+              // Pass role as query parameter for Google registration
+              const roleParam = role ? `?role=${role}` : '';
+              window.location.href = `${backendUrl}/api/auth/google/redirect${roleParam}`;
+            }}
             className="flex justify-center items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm bg-white hover:bg-gray-50"
           >
             <img src="/public/auth/google.svg" alt="Google" className="h-6 w-6" />
-          </button>
-          <button
-            type="button"
-            className="flex justify-center items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm bg-white hover:bg-gray-50"
-          >
-            <img src="/public/auth/apple.svg" alt="Apple" className="h-6 w-6" />
           </button>
         </div>
       </div>

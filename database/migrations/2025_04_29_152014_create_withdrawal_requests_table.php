@@ -9,9 +9,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('withdrawal_requests', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade'); 
-            $table->foreignId('wallet_id')->constrained()->onDelete('cascade');
+            $table->uuid('id')->primary();
+            $table->foreignUuid('user_id')->constrained()->onDelete('cascade'); 
+            $table->foreignUuid('wallet_id')->constrained()->onDelete('cascade');
             $table->decimal('amount', 10, 2);
             $table->enum('status', ['pending', 'approved', 'rejected', 'processing', 'completed'])->default('pending');
             $table->text('payment_details')->nullable();

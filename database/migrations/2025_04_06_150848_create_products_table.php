@@ -12,12 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('products', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('name');
             $table->string('slug')->unique();
             $table->text('description')->nullable();
-            $table->foreignId('category_id')->nullable()->constrained('categories')->nullOnDelete();
-            $table->foreignId('artisan_id')->constrained('artisans')->cascadeOnDelete();
+            $table->foreignUuid('category_id')->nullable()->constrained('categories')->nullOnDelete();
+            $table->foreignUuid('artisan_id')->constrained('artisans')->cascadeOnDelete();
             $table->enum('status', ['active', 'inactive', 'suspended'])->default('active');
             $table->softDeletes();
             $table->timestamps();

@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('bids', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('auction_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->uuid('id')->primary();
+            $table->foreignUuid('auction_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('user_id')->constrained()->cascadeOnDelete();
             $table->decimal('amount', 10, 2);
             $table->boolean('is_winning')->default(false); // Flag to indicate if this is currently the highest bid
             $table->string('ip_address')->nullable();

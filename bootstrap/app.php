@@ -23,6 +23,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'role' => \App\Http\Middleware\RoleMiddleware::class,
             'permission' => \App\Http\Middleware\PermissionMiddleware::class, // Added permission alias
+            'artisan.verified' => \App\Http\Middleware\ArtisanVerified::class,
         ]);
 
         $middleware->statefulApi();

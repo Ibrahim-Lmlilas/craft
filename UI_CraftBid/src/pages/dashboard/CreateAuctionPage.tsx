@@ -29,7 +29,7 @@ import { cn } from '@/lib/utils';
 import { FormMessage } from '@/components/ui/form';
 
 interface Product {
-  id: number;
+  id: string;
   name: string;
   status: string;
   images: {
@@ -369,7 +369,7 @@ const CreateAuctionPage: React.FC = () => {
     let endDateTime = endDate ? getDateWithTime(endDate, endHour, endMinute) : null;
     
     const auctionData = {
-      product_id: parseInt(productId),
+      product_id: productId,
       reserve_price: parseFloat(reservePrice),
       bid_increment: parseFloat(bidIncrement),
       quantity: parseInt(quantity),

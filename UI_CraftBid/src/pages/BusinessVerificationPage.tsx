@@ -16,7 +16,8 @@ const BusinessVerificationPage: React.FC = () => {
         emailVerificationStatus,
         idVerificationStatus,
         profileCompletionStatus,
-        resendVerificationEmail
+        resendVerificationEmail,
+        checkAuthStatus
     } = useAuth();
 
     const [resendStatus, setResendStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
@@ -30,6 +31,13 @@ const BusinessVerificationPage: React.FC = () => {
             navigate('/login', { replace: true, state: { message: 'Please log in.' } });
         }
     }, [authLoading, user, navigate]);
+
+    // Refresh verification status when page loads
+    React.useEffect(() => {
+        if (user && !authLoading) {
+            checkAuthStatus();
+        }
+    }, []);
 
     const handleResendEmail = async () => {
         const emailToResend = user?.email;
@@ -107,7 +115,7 @@ const BusinessVerificationPage: React.FC = () => {
         } else if (section === 'id') {
             switch (status) {
                 case 'not_started': return 'Upload your ID document for verification.';
-                case 'pending': return 'Your ID is currently under review (usually takes 1-2 business days).';
+                case 'pending': return 'Your ID is currently under review.';
                 case 'confirmed': return 'Your ID has been verified.';
                 case 'rejected': return 'Your ID verification failed. Please review the reason and try again.';
                 default: return 'ID verification applies to artisans only.';

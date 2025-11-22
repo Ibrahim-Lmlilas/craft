@@ -12,11 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('categories', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('name');
             $table->string('slug')->unique();
             $table->text('description')->nullable();
-            $table->foreignId('parent_id')->nullable()->constrained('categories')->nullOnDelete(); // Self-referencing for subcategories
+            $table->foreignUuid('parent_id')->nullable()->constrained('categories')->nullOnDelete(); // Self-referencing for subcategories
             $table->string('image')->nullable();
             $table->softDeletes(); // Corrected from previous plan discussion
             $table->timestamps();

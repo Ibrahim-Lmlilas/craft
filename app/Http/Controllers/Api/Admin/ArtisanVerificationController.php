@@ -21,6 +21,7 @@ class ArtisanVerificationController extends Controller
             'id_verification_status' => 'rejected',
             'id_verified_at' => null,
             'verification_rejection_reason' => $request->input('reason'),
+            'status' => 'pending', // Keep status as pending when rejected
         ]);
 
         return response()->json(['message' => 'Artisan verification rejected successfully.'], 200);
@@ -31,6 +32,7 @@ class ArtisanVerificationController extends Controller
             'id_verification_status' => 'confirmed',
             'id_verified_at' => now(),
             'verification_rejection_reason' => null,
+            'status' => 'active', // Activate artisan account when approved
         ]);
 
         return response()->json(['message' => 'Artisan verification approved successfully.'], 200);

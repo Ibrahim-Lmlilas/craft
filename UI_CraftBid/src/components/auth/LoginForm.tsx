@@ -33,8 +33,16 @@ export default function LoginForm() {
         setLoading(false);
 
         if (response.success) {
-            const from = (location.state as any)?.from?.pathname || '/'; // Redirect to intended page or home
-            navigate(from, { replace: true });
+            // Check if user is admin and redirect to admin dashboard
+            const user = response.data;
+            const isAdmin = user?.roles?.some((role: { name: string }) => role.name === 'admin');
+            
+            if (isAdmin) {
+                navigate('/admin', { replace: true });
+            } else {
+                const from = (location.state as any)?.from?.pathname || '/dashboard'; // Redirect to intended page or dashboard
+                navigate(from, { replace: true });
+            }
         } else if (response.verificationRequired) {
             // Navigate to status page if email verification is needed
             const userRole = 'buyer'; // Assuming buyer if role unknown, adjust as needed

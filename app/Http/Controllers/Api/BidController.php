@@ -51,7 +51,9 @@ class BidController extends Controller
             ]);
         }
         
-        if($auction->user_id === $bidder->id) {
+        // Load artisan relationship to check ownership
+        $auction->load('artisan');
+        if($auction->artisan->user_id === $bidder->id) {
             throw ValidationException::withMessages([
                 'auction' => ['You cannot bid on your own auction.'],
             ]);

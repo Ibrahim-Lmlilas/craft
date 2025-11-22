@@ -11,11 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('artisan_images', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->foreignUuid('artisan_id')->constrained()->cascadeOnDelete();
-            $table->string('path');
-            $table->timestamps();
+        Schema::table('artisans', function (Blueprint $table) {
+            $table->timestamp('id_verification_pending_at')->nullable()->after('id_verified_at');
         });
     }
 
@@ -24,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('artisan_images');
+        Schema::table('artisans', function (Blueprint $table) {
+            $table->dropColumn('id_verification_pending_at');
+        });
     }
 };

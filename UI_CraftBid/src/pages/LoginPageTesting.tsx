@@ -82,14 +82,15 @@ const LoginPageTesting: React.FC = () => { // Renamed component
 
                     <div className='flex flex-col items-center justify-center w-full mt-8'>
                         <div className='flex flex-col gap-4 w-full'>
-                            <button className="flex font-bold w-full items-center justify-center gap-2 rounded-md border-black bg-white px-4 text-black hover:bg-gray-50 py-3 border-2">
+                            <button 
+                                onClick={() => {
+                                    const backendUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
+                                    window.location.href = `${backendUrl}/api/auth/google/redirect`;
+                                }}
+                                className="flex font-bold w-full items-center justify-center gap-2 rounded-md border-black bg-white px-4 text-black hover:bg-gray-50 py-3 border-2"
+                            >
                                 <img src="/public/auth/google.svg" className="size-7" alt="Google logo" />
                                 Continue with Google
-                            </button>
-
-                            <button className="flex font-bold w-full items-center justify-center gap-2 rounded-md border-black bg-white px-4  text-black hover:bg-gray-50 py-3 border-2">
-                                <img src="/public/auth/apple.svg" className="size-7" alt="Apple logo" />
-                                Continue with Apple
                             </button>
 
                             <div className="relative">
