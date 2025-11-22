@@ -1,0 +1,23 @@
+# Development override for docker-compose.yml
+# Usage: docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
+
+services:
+  # Use development frontend instead of production build
+  frontend:
+    image: node:18-alpine
+    container_name: craftbid_frontend_dev
+    restart: unless-stopped
+    working_dir: /app
+    volumes:
+      - ./UI_CraftBid:/app
+      - /app/node_modules
+    ports:
+      - "${FRONTEND_DEV_PORT:-5173}:5173"
+    depends_on:
+      - backend
+    networks:
+      - craftbid_network
+    environment:
+      - VITE_API_BASE_URL=${VITE_API_BASE_URL:-http://localhost:8000}
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0 --port 5173"
+

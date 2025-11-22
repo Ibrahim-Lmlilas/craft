@@ -1,0 +1,143 @@
+services:
+  # MySQL Database
+  mysql:
+    image: mysql:8.0
+    container_name: craftbid_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE:-craftbid}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-root}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-root}
+      MYSQL_USER: ${DB_USERNAME:-craftbid}
+    ports:
+      - "${DB_PORT:-3306}:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - craftbid_network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  # Laravel Backend
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: craftbid_backend
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+      - ./storage:/var/www/html/storage
+    ports:
+      - "${APP_PORT:-8000}:8000"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - craftbid_network
+    environment:
+      - DB_CONNECTION=mysql
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_DATABASE=${DB_DATABASE:-craftbid}
+      - DB_USERNAME=${DB_USERNAME:-craftbid}
+      - DB_PASSWORD=${DB_PASSWORD:-root}
+    command: >
+      sh -c "composer install --no-interaction --prefer-dist --optimize-autoloader &&
+             php artisan key:generate --force &&
+             php artisan migrate --force &&
+             php artisan db:seed --force &&
+             php artisan storage:link &&
+             php artisan serve --host=0.0.0.0 --port=8000"
+
+  # Laravel Queue Worker
+  queue:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: craftbid_queue
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+    depends_on:
+      - backend
+      - mysql
+    networks:
+      - craftbid_network
+    environment:
+      - DB_CONNECTION=mysql
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_DATABASE=${DB_DATABASE:-craftbid}
+      - DB_USERNAME=${DB_USERNAME:-craftbid}
+      - DB_PASSWORD=${DB_PASSWORD:-root}
+    command: php artisan queue:work --tries=3 --timeout=90
+
+  # Laravel Reverb (WebSocket Server)
+  reverb:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: craftbid_reverb
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+    depends_on:
+      - backend
+    networks:
+      - craftbid_network
+    ports:
+      - "${REVERB_PORT:-8080}:8080"
+    environment:
+      - REVERB_APP_ID=${REVERB_APP_ID:-app-id}
+      - REVERB_APP_KEY=${REVERB_APP_KEY:-app-key}
+      - REVERB_APP_SECRET=${REVERB_APP_SECRET:-app-secret}
+      - REVERB_HOST=0.0.0.0
+      - REVERB_PORT=8080
+    command: php artisan reverb:start --host=0.0.0.0 --port=8080
+
+  # React Frontend (Production Build)
+  frontend:
+    build:
+      context: ./UI_CraftBid
+      dockerfile: Dockerfile
+    container_name: craftbid_frontend
+    restart: unless-stopped
+    ports:
+      - "${FRONTEND_PORT:-5173}:80"
+    depends_on:
+      - backend
+    networks:
+      - craftbid_network
+    environment:
+      - VITE_API_BASE_URL=${VITE_API_BASE_URL:-http://localhost:8000}
+
+  # Nginx (Reverse Proxy - Optional for production)
+  nginx:
+    image: nginx:alpine
+    container_name: craftbid_nginx
+    restart: unless-stopped
+    ports:
+      - "${NGINX_PORT:-80}:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./public:/var/www/html/public
+    depends_on:
+      - backend
+      - frontend
+    networks:
+      - craftbid_network
+
+volumes:
+  mysql_data:
+    driver: local
+
+networks:
+  craftbid_network:
+    driver: bridge
+
