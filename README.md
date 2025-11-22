@@ -1,132 +1,16 @@
 # CraftBid 🎨
 
 <p align="center">
+  <img src="UI_CraftBid/public/image.png" alt="CraftBid Login Page" width="800">
+</p>
+
+<p align="center">
   <strong>Experience The Souk Modernized</strong>
 </p>
 
 <p align="center">
   A modern online auction platform connecting artisans with buyers, built with Laravel and React.
 </p>
-
----
-
-## 🖼️ Project Screenshots
-
-<div align="center">
-
-<div style="position: relative; max-width: 900px; margin: 0 auto; padding: 20px;">
-  
-  <!-- Slider Container -->
-  <div id="slider-container" style="position: relative; width: 100%; max-width: 900px; margin: 0 auto; overflow: hidden; border-radius: 12px; box-shadow: 0 8px 16px rgba(0,0,0,0.2);">
-    
-    <!-- Images Container -->
-    <div id="slider-images" style="display: flex; transition: transform 0.5s ease-in-out; width: 500%;">
-      <div style="width: 20%; flex-shrink: 0;">
-        <img src="UI_CraftBid/public/image.png" alt="CraftBid Login Page" style="width: 100%; height: auto; display: block;">
-      </div>
-      <div style="width: 20%; flex-shrink: 0;">
-        <img src="UI_CraftBid/public/image copy.png" alt="CraftBid Screenshot 2" style="width: 100%; height: auto; display: block;">
-      </div>
-      <div style="width: 20%; flex-shrink: 0;">
-        <img src="UI_CraftBid/public/image copy 2.png" alt="CraftBid Screenshot 3" style="width: 100%; height: auto; display: block;">
-      </div>
-      <div style="width: 20%; flex-shrink: 0;">
-        <img src="UI_CraftBid/public/auth/bg.png" alt="CraftBid Background" style="width: 100%; height: auto; display: block;">
-      </div>
-      <div style="width: 20%; flex-shrink: 0;">
-        <img src="UI_CraftBid/public/auth/sideImage_2.jpg" alt="CraftBid Side Image" style="width: 100%; height: auto; display: block;">
-      </div>
-    </div>
-    
-    <!-- Navigation Buttons -->
-    <button onclick="previousImage()" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.6); color: white; border: none; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; font-size: 24px; z-index: 10; transition: all 0.3s;">‹</button>
-    <button onclick="nextImage()" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.6); color: white; border: none; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; font-size: 24px; z-index: 10; transition: all 0.3s;">›</button>
-    
-    <!-- Dots Indicator -->
-    <div style="position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); display: flex; gap: 10px; z-index: 10;">
-      <span onclick="goToSlide(0)" id="dot-0" style="width: 12px; height: 12px; border-radius: 50%; background: #fff; cursor: pointer; transition: all 0.3s; box-shadow: 0 2px 4px rgba(0,0,0,0.3);"></span>
-      <span onclick="goToSlide(1)" id="dot-1" style="width: 12px; height: 12px; border-radius: 50%; background: rgba(255,255,255,0.5); cursor: pointer; transition: all 0.3s; box-shadow: 0 2px 4px rgba(0,0,0,0.3);"></span>
-      <span onclick="goToSlide(2)" id="dot-2" style="width: 12px; height: 12px; border-radius: 50%; background: rgba(255,255,255,0.5); cursor: pointer; transition: all 0.3s; box-shadow: 0 2px 4px rgba(0,0,0,0.3);"></span>
-      <span onclick="goToSlide(3)" id="dot-3" style="width: 12px; height: 12px; border-radius: 50%; background: rgba(255,255,255,0.5); cursor: pointer; transition: all 0.3s; box-shadow: 0 2px 4px rgba(0,0,0,0.3);"></span>
-      <span onclick="goToSlide(4)" id="dot-4" style="width: 12px; height: 12px; border-radius: 50%; background: rgba(255,255,255,0.5); cursor: pointer; transition: all 0.3s; box-shadow: 0 2px 4px rgba(0,0,0,0.3);"></span>
-    </div>
-    
-    <!-- Image Counter -->
-    <div style="position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.6); color: white; padding: 5px 15px; border-radius: 20px; font-size: 14px; z-index: 10;">
-      <span id="current-slide">1</span> / 5
-    </div>
-    
-  </div>
-  
-</div>
-
-<script>
-let currentSlide = 0;
-const totalSlides = 5;
-
-function updateSlider() {
-  const slider = document.getElementById('slider-images');
-  const translateX = -currentSlide * 20; // 20% per slide
-  slider.style.transform = `translateX(${translateX}%)`;
-  
-  // Update dots
-  for (let i = 0; i < totalSlides; i++) {
-    const dot = document.getElementById(`dot-${i}`);
-    if (i === currentSlide) {
-      dot.style.background = '#fff';
-      dot.style.width = '16px';
-      dot.style.height = '16px';
-    } else {
-      dot.style.background = 'rgba(255,255,255,0.5)';
-      dot.style.width = '12px';
-      dot.style.height = '12px';
-    }
-  }
-  
-  // Update counter
-  document.getElementById('current-slide').textContent = currentSlide + 1;
-}
-
-function nextImage() {
-  currentSlide = (currentSlide + 1) % totalSlides; // Loop back to 0 after last slide
-  updateSlider();
-}
-
-function previousImage() {
-  currentSlide = (currentSlide - 1 + totalSlides) % totalSlides; // Loop to last slide if at 0
-  updateSlider();
-}
-
-function goToSlide(index) {
-  currentSlide = index;
-  updateSlider();
-}
-
-// Auto-play (optional - uncomment to enable)
-// setInterval(() => nextImage(), 5000);
-
-// Initialize
-updateSlider();
-
-// Keyboard navigation
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'ArrowLeft') previousImage();
-  if (e.key === 'ArrowRight') nextImage();
-});
-</script>
-
-<style>
-button:hover {
-  background: rgba(0,0,0,0.8) !important;
-  transform: translateY(-50%) scale(1.1) !important;
-}
-
-span[onclick]:hover {
-  transform: scale(1.2);
-}
-</style>
-
-</div>
 
 ---
 
